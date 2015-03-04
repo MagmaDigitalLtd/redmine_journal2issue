@@ -2,7 +2,10 @@
 <% for journal in journals %>
   <div id="change-<%= journal.id %>" class="<%= journal.css_classes %>">
     <div id="note-<%= journal.indice %>">
-    <h4><%= link_to(l(:journal_to_issue), { :controller => 'journal2issue', :action => 'create', :id => journal.id }, :data => {:confirm => l(:j2i_are_you_sure)}, :method => :post, :class => 'journal2issue-link') unless journal.notes.blank? %>
+    <h4>
+      <% if User.current.allowed_to?(:add_issues, @project) %>
+        <%= link_to(l(:journal_to_issue), { :controller => 'journal2issue', :action => 'create', :id => journal.id }, :data => {:confirm => l(:j2i_are_you_sure)}, :method => :post, :class => 'journal2issue-link') unless journal.notes.blank? %>
+      <% end %>
       <%= link_to "##{journal.indice}", {:anchor => "note-#{journal.indice}"}, :class => "journal-link" %>
     <%= avatar(journal.user, :size => "24") %>
     <%= authoring journal.created_on, journal.user, :label => :label_updated_time_by %>
@@ -24,5 +27,5 @@
 <% heads_for_wiki_formatter if User.current.allowed_to?(:edit_issue_notes, issue.project) || User.current.allowed_to?(:edit_own_issue_notes, issue.project) %>
 
 <% content_for :header_tags do %>
-    <%= stylesheet_link_tag 'journal2issue', :plugin => 'redmine_journal2issue' %>
+    <%= stylesheet_link_tag 'journal2issue', :plugin => 'journal2issue' %>
 <% end %>

@@ -6,3 +6,4 @@ en:
   j2i_issue_created_success: "Issue created Successfully"
   j2i_issue_created_error: "There was an error creating the issue"
   j2i_issue_created_at: "This entry was converted to an issue at #%{count}"
+  j2i_not_permitted: "You are not permitted to create a new issue against this project"

@@ -8,7 +8,10 @@ class Journal2issueController < ApplicationController
 
   def create
     @journal = Journal.find_by_id(params[:id])
-    @issue = Issue.new(
+
+
+    if User.current.allowed_to?(:add_issues, @project)
+      @issue = Issue.new(
                  :author => @journal.user,
                  :subject => @journal.notes[0,50],
                  :description => @journal.notes,
@@ -18,22 +21,27 @@ class Journal2issueController < ApplicationController
                  :priority => @journal.issue.priority,
                  :project => @journal.issue.project)
 
-    if @issue.save
-      @relation = IssueRelation.new(
-                                   :issue_from => @issue,
-                                   :issue_to => @journal.issue,
-                                   :relation_type => "relates")
-      @relation.save
+      if @issue.save
+        @relation = IssueRelation.new(
+                                     :issue_from => @issue,
+                                     :issue_to => @journal.issue,
+                                     :relation_type => "relates")
+        @relation.save
 
-      @journal.notes = l(:j2i_issue_created_at, @issue.id)
-      @journal.save
+        @journal.notes = l(:j2i_issue_created_at, @issue.id)
+        @journal.save
 
-      flash[:notice] = l(:j2i_issue_created_success);
-      redirect_to issue_path(@issue)
+        flash[:notice] = l(:j2i_issue_created_success);
+        redirect_to issue_path(@issue)
+      else
+        flash[:error] = l(:j2i_issue_created_error)  + " (" + @issue.errors.full_messages.join(', ') + ")"
+      end
     else
-      flash[:error] = l(:j2i_issue_created_error)  + " (" + @issue.errors.full_messages.join(', ') + ")"
-      redirect_to issue_path(@journal.issue)
+      flash[:error] = l(:j2i_not_permitted)
     end
+
+    redirect_to issue_path(@journal.issue)
+
   end
 
 end
