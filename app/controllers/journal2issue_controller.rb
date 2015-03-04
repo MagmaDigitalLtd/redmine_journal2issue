@@ -10,7 +10,7 @@ class Journal2issueController < ApplicationController
     @journal = Journal.find_by_id(params[:id])
 
 
-    if User.current.allowed_to?(:add_issues, @project)
+    if User.current.allowed_to?(:add_issues, @journal.issue.project)
       @issue = Issue.new(
                  :author => @journal.user,
                  :subject => @journal.notes[0,50],
@@ -33,6 +33,7 @@ class Journal2issueController < ApplicationController
 
         flash[:notice] = l(:j2i_issue_created_success);
         redirect_to issue_path(@issue)
+        return
       else
         flash[:error] = l(:j2i_issue_created_error)  + " (" + @issue.errors.full_messages.join(', ') + ")"
       end
