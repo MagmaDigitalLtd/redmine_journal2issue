@@ -1,0 +1,6 @@
+= Journal 2 Issue
+
+This plugin adds a link to the journal entries for an issue that allows you to convert the comment to a new issue.
+It will generate a new issue basd upon the contents of the journal note and the issue that it belongs to.
+
+To install this plugin please use the normal procedure found at http://www.redmine.org/projects/redmine/wiki/Plugins

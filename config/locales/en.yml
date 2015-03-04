@@ -1,0 +1,8 @@
+# English strings go here for Rails i18n
+en:
+  # my_label: "My label"
+  journal_to_issue: "Convert to Issue"
+  j2i_are_you_sure: "Are you sure you want to create an issue from this journal entry"
+  j2i_issue_created_success: "Issue created Successfully"
+  j2i_issue_created_error: "There was an error creating the issue"
+  j2i_issue_created_at: "This entry was converted to an issue at #%{count}"
